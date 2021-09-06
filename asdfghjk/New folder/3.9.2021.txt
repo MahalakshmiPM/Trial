@@ -1,0 +1,342 @@
+create table employee(empID int,empName varchar (10),empDOB date,empSal double,empDesignation varchar(25),empStartDate date,empEndDate date);
+
+insert into employee values(1,'Sabari','1990-02-05',35000,'Software Engineer','1918-10-22','2050-08-05');
+insert into employee values(4,'Shree','1980-05-27',40000,'Software Engineer','1999-06-30','2050-08-05');
+insert into employee values(5,'akshaya','1985-02-19',60000,'Software Engineer','2016-06-12','2050-08-05');
+insert into employee values(2,'Shree','1980-05-27',35000,'Software Engineer','1999-06-30','2050-08-05');
+insert into employee values(3,'Mahalakshmi','1999-10-05',25000,'Software Engineer','2021-08-05','5050-12-12');
+
+select * from employee;
++-------+-------------+------------+--------+-------------------+--------------+------------+
+| empID | empName     | empDOB     | empSal | empDesignation    | empStartDate | empEndDate |
++-------+-------------+------------+--------+-------------------+--------------+------------+
+|     1 | Sabari      | 1990-02-05 |  35000 | Software Engineer | 1918-10-22   | 2050-08-05 |
+|     4 | Shree       | 1980-05-27 |  40000 | Software Engineer | 1999-06-30   | 2050-08-05 |
+|     5 | akshaya     | 1985-02-19 |  60000 | Software Engineer | 2016-06-12   | 2050-08-05 |
+|     2 | Shree       | 1980-05-27 |  35000 | Software Engineer | 1999-06-30   | 2050-08-05 |
+|     3 | Mahalakshmi | 1999-10-05 |  25000 | Software Engineer | 2021-08-05   | 5050-12-12 |
++-------+-------------+------------+--------+-------------------+--------------+------------+
+update employee set empSal=empSal+5000 where empDOB<'1985-06-01';
+select * from employee;
++-------+-------------+------------+--------+-------------------+--------------+------------+
+| empID | empName     | empDOB     | empSal | empDesignation    | empStartDate | empEndDate |
++-------+-------------+------------+--------+-------------------+--------------+------------+
+|     1 | Sabari      | 1990-02-05 |  35000 | Software Engineer | 1918-10-22   | 2050-08-05 |
+|     4 | Shree       | 1980-05-27 |  45000 | Software Engineer | 1999-06-30   | 2050-08-05 |
+|     5 | akshaya     | 1985-02-19 |  65000 | Software Engineer | 2016-06-12   | 2050-08-05 |
+|     2 | Shree       | 1980-05-27 |  40000 | Software Engineer | 1999-06-30   | 2050-08-05 |
+|     3 | Mahalakshmi | 1999-10-05 |  25000 | Software Engineer | 2021-08-05   | 5050-12-12 |
++-------+-------------+------------+--------+-------------------+--------------+------------+
+
+delete from employee where empStartDate>'2019-06-01';
+select * from employee;
++-------+-------------+------------+--------+-------------------+--------------+------------+
+| empID | empName     | empDOB     | empSal | empDesignation    | empStartDate | empEndDate |
++-------+-------------+------------+--------+-------------------+--------------+------------+
+|     1 | Sabari      | 1990-02-05 |  35000 | Software Engineer | 1918-10-22   | 2050-08-05 |
+|     4 | Shree       | 1980-05-27 |  45000 | Software Engineer | 1999-06-30   | 2050-08-05 |
+|     5 | akshaya     | 1985-02-19 |  65000 | Software Engineer | 2016-06-12   | 2050-08-05 |
+|     2 | Shree       | 1980-05-27 |  40000 | Software Engineer | 1999-06-30   | 2050-08-05 |
++-------+-------------+------------+--------+-------------------+--------------+------------+
+
+
+-----------------OnlineFoodOrderingDB------------------------------
+
+1. Create a Table called Restaurants
+	RestaurantID(PK,Auto), RestaurantName , RestaurantAddress , RestaurantCity , ContactNo
+2. Create a Table called RMenuItems
+	MenuID (PK , Auto) ,RestID (FK), MenuName , MenuType , MenuCategory , MenuPrice , MenuDesc
+3. Create a Table called Customers
+	CustomerID (PK, Email) , CustomerName , CustomerCity , CustomerDOB , CustomerGender , CustomerPassword
+4. Create a table called Orders
+	OrderID (PK, Auto) , CustomerID (FK) , OrderDate , DeliveryAddress , OrderStatus
+5. Create a table called OrderMenus
+	OrderID (FK) , MenuID(FK) , MenuQty , MenuPrice 
+	Note : OrderID & MenuID should be together primary key.
+
+Add some dummy data in the tables.
+
+Reports / Queries
+
+1. Show the list of Restaurant of specific city
+2. Show the list of all Restaurants along with menus (RestaurantID , RestaurantName ,MenuID , MenuName , MenuPrice)
+3. Show the list of  Restaurants along with menus (RestaurantID , RestaurantName ,MenuID , MenuName , MenuPrice) of specific city
+4. Show the list of Orders of a specific customer
+5. Show the list of orders along with ordermenus of a specific customer
+6. Show the list of latest 5 orders of a specific customer
+
+-----------------OnlineFoodOrderingDB------------------------------
+
+create table Restaurant (resID int  AUTO_INCREMENT PRIMARY KEY, resName varchar(20),resAddress varchar(50),resCity varchar(20),contNo bigint);
+Query OK, 0 rows affected (2.30 sec)
+
+create table RMenuItems(menuID int auto_increment primary key,resID int references Restaurant(resID),menuName varchar(20),menuType varchar(20),menuCategory varchar(20),menuPrice float,menuDesc varchar(50));
+
+
+create table Customers(cusID varchar(35) primary key,cusName varchar(20),cusCity varchar(15),cusGender varchar(6),cusPass varchar(20));
+
+create table Orders(OrdID int auto_increment primary key,cusID varchar(35),ordDate date,deliAddress varchar(50),ordStatus varchar(15),foreign key(cusID) references Customers(cusId));
+
+create table OrderMenus(ordID int,menuID int,menyQty int,foreign key(ordID)references Orders(ordID),foreign key(menuID) references RMenuItems(menuID),primary key (ordID,menuID) );
+
+
+insert into Restaurant values(null,'Ponram','ryu qdhqoiefh hsagdkj Tamilnadu-624005','Dindigul',9552846194);
+insert into Restaurant values(0,'thalapakatti',' asghierf adfweufwe qwdqe Tamilnadu-624002','Dindigul',8153942647);
+insert into Restaurant values('Venu','j afargwfhkwj jfnwekfnqei Tamilnadu-638854','Trichy',6224493517);
+
+insert into RMenuItems values(null,1,'Briyani','Main','AN',250,'Briyani rice comes with one Egg ');
+insert into RMenuItems values(null,1,'Full Meals','Main','Food',250,'rice comes 2 variety of vegetable it is unlimited');
+insert into RMenuItems values(null,2,'Special Briyani','Main','Food',300,'crispy briyani with 1 egg and addons')
+insert into RMenuItems values(null,2,'Mega cone','Desserts','ice cream',300,'desired toppings and combos');
+insert into RMenuItems values(null,3,'Casata','Desserts','ice cream',50,'choco bread flavour');
+insert into RMenuItems values(null,3,'Meals','main','Food',200,'South Indian style,Unlimited');
+insert into RMenuItems values(null,3,'Fresh juice','Drinks','juice',150,'all  flavours');
+
+insert into Customers values('maha@gmail.com','Maha','Dindigul','F','12345','1999-10-05');
+insert into Customers values('lakshmi@gmail.com','Lakshmi','Dindigul','F','67890','1999-10-05');
+
+insert into Orders values (null,'maha@gmail.com','2021-09-05','Dindigul','Success');
+insert into Orders values (null,'maha@gmail.com','2021-09-06','Dindigul','Success');
+insert into Orders values (null,'maha@gmail.com','2021-09-06','Dindigul','On Process');
+insert into Orders values (null,'maha@gmail.com','2021-09-06','Dindigul','Cancelled');
+insert into Orders values (null,'maha@gmail.com','2021-09-06','Dindigul','On Process');
+insert into Orders values (null,'lakshmi@gmail.com','2021-09-05','Dindigul','Success');
+insert into Orders values (null,'lakshmi@gmail.com','2021-09-05','Dindigul','Cancelled');
+insert into Orders values (null,'maha@gmail.com','2021-09-05','Dindigul','On Process');
+
+mysql> insert into ordermenus values (2,3,2);
+mysql> insert into ordermenus values (3,1,1);
+mysql> insert into ordermenus values (4,3,1);
+mysql> insert into ordermenus values (5,7,3);
+mysql> insert into ordermenus values (6,6,2);
+mysql> insert into ordermenus values (7,5,1);
+mysql> insert into ordermenus values (8,4,2);
+mysql> insert into ordermenus values (9,1,1);
+
+
+1.....................................................................................................
+select * from Restaurant where resCity='Dindigul';
++-------+--------------+-------------------------------------------+----------+------------+
+| resID | resName      | resAddress                                | resCity  | contNo     |
++-------+--------------+-------------------------------------------+----------+------------+
+|     1 | Ponram       | ryu qdhqoiefh hsagdkj Tamilnadu-624005    | Dindigul | 9552846194 |
+|     2 | thalapakatti | asghierf adfweufwe qwdqe Tamilnadu-624002 | Dindigul | 8153942647 |
++-------+--------------+-------------------------------------------+----------+------------+
+ 
+select * from Restaurant where resCity='Trichy';
++-------+---------+------------------------------------------+---------+------------+
+| resID | resName | resAddress                               | resCity | contNo     |
++-------+---------+------------------------------------------+---------+------------+
+|     3 | Venu    | afargwfhkwj jfnwekfnqei Tamilnadu-638854 | Trichy  | 6224493517 |
++-------+---------+------------------------------------------+---------+------------+
+
+
+
+2..........................................................................
+select resID,ResName,menuID,menuName,menuPrice from Restaurant join RMenuItems on Restaurant.resID = RMenuItems.resID;
+ERROR 1052 (23000): Column 'resID' in field list is ambiguous
+alter table Restaurant rename column resId to restId;
+select resID,ResName,menuID,menuName,menuPrice from Restaurant join RMenuItems on Restaurant.restID = RMenuItems.resID;
++-------+--------------+--------+-----------------+-----------+
+| resID | ResName      | menuID | menuName        | menuPrice |
++-------+--------------+--------+-----------------+-----------+
+|     1 | Ponram       |      1 | Briyani         |       250 |
+|     1 | Ponram       |      2 | Full Meals      |       250 |
+|     2 | thalapakatti |      3 | Special Briyani |       300 |
+|     2 | thalapakatti |      4 | Mega cone       |       300 |
+|     3 | Venu         |      5 | Casata          |        50 |
+|     3 | Venu         |      8 | Meals           |       200 |
+|     3 | Venu         |      9 | Fresh juice     |       150 |
++-------+--------------+--------+-----------------+-----------+
+
+
+
+3..............................................................................................................................
+select resID,ResName,menuID,menuName,menuPrice from Restaurant join RMenuItems on Restaurant.restID = RMenuItems.resID where resCity = 'Trichy';
++-------+---------+--------+-------------+-----------+
+| resID | ResName | menuID | menuName    | menuPrice |
++-------+---------+--------+-------------+-----------+
+|     3 | Venu    |      5 | Casata      |        50 |
+|     3 | Venu    |      6 | Meals       |       200 |
+|     3 | Venu    |      7 | Fresh juice |       150 |
++-------+---------+--------+-------------+-----------+
+
+select resID,ResName,menuID,menuName,menuPrice from Restaurant join RMenuItems on Restaurant.restID = RMenuItems.resID where resCity = 'Dindigul';
++-------+--------------+--------+-----------------+-----------+
+| resID | ResName      | menuID | menuName        | menuPrice |
++-------+--------------+--------+-----------------+-----------+
+|     1 | Ponram       |      1 | Briyani         |       250 |
+|     1 | Ponram       |      2 | Full Meals      |       250 |
+|     2 | thalapakatti |      3 | Special Briyani |       300 |
+|     2 | thalapakatti |      4 | Mega cone       |       300 |
++-------+--------------+--------+-----------------+-----------+
+
+
+
+4.................................................................................................................
+mysql> select * from orders where cusID = 'maha@gmail.com';
++-------+----------------+------------+-------------+------------+
+| OrdID | cusID          | ordDate    | deliAddress | ordStatus  |
++-------+----------------+------------+-------------+------------+
+|     2 | maha@gmail.com | 2021-09-05 | Dindigul    | Success    |
+|     3 | maha@gmail.com | 2021-09-06 | Dindigul    | Success    |
+|     4 | maha@gmail.com | 2021-09-06 | Dindigul    | On Process |
+|     5 | maha@gmail.com | 2021-09-06 | Dindigul    | Cancelled  |
+|     6 | maha@gmail.com | 2021-09-06 | Dindigul    | On Process |
+|     9 | maha@gmail.com | 2021-09-05 | Dindigul    | On Process |
++-------+----------------+------------+-------------+------------+
+
+
+5..................................................................................................................
+select * from ordermenus join orders where cusId = 'maha@gmail.com' and ordermenus.ordId=orders.ordID;
++-------+--------+---------+-------+----------------+------------+-------------+------------+
+| ordID | menuID | menyQty | OrdID | cusID          | ordDate    | deliAddress | ordStatus  |
++-------+--------+---------+-------+----------------+------------+-------------+------------+
+|     2 |      3 |       2 |     2 | maha@gmail.com | 2021-09-05 | Dindigul    | Success    |
+|     3 |      1 |       1 |     3 | maha@gmail.com | 2021-09-06 | Dindigul    | Success    |
+|     4 |      3 |       1 |     4 | maha@gmail.com | 2021-09-06 | Dindigul    | On Process |
+|     5 |      7 |       3 |     5 | maha@gmail.com | 2021-09-06 | Dindigul    | Cancelled  |
+|     6 |      6 |       2 |     6 | maha@gmail.com | 2021-09-06 | Dindigul    | On Process |
+|     9 |      1 |       1 |     9 | maha@gmail.com | 2021-09-05 | Dindigul    | On Process |
++-------+--------+---------+-------+----------------+------------+-------------+------------+
+
+6..................................................................................................................
+select * from orders where cusID='maha@gmail.com' order by ordID desc LIMIT 5;
++-------+----------------+------------+-------------+------------+
+| OrdID | cusID          | ordDate    | deliAddress | ordStatus  |
++-------+----------------+------------+-------------+------------+
+|     9 | maha@gmail.com | 2021-09-05 | Dindigul    | On Process |
+|     6 | maha@gmail.com | 2021-09-06 | Dindigul    | On Process |
+|     5 | maha@gmail.com | 2021-09-06 | Dindigul    | Cancelled  |
+|     4 | maha@gmail.com | 2021-09-06 | Dindigul    | On Process |
+|     3 | maha@gmail.com | 2021-09-06 | Dindigul    | Success    |
++-------+----------------+------------+-------------+------------+
+
+
+
+
+
+create table CustomerInfo(custID int auto_increment primary key,custName  varchar(20),custAdd varchar(50),custMobNo bigint unique,pan varchar(10) unique,custPass varchar(8));
+
+create table AccountInfo(accId int auto_increment primary key,accType varchar(20),accBal float,accOpenDate date,accStatus varchar(10) check(accStatus='Open' or accStatus='Closed' or accStatus ='Blocked'));
+alter table accountinfo add column cusID int references customerinfo(custID);
+
+create table TransactionInfo(transID int auto_increment primary key,accID int references AccountInfo(accID),transType varchar(10) default 'deposit' check (transType = 'deposit'),amount float check(amount>0),transDate date);
+
+
+insert into customerInfo values(null,'Mahalakshmi','R.M.Colony Dindigul tamilnadu-624001',9638352945,'PVDEJ5365B','sgsgdf');
+insert into customerInfo values(null,'Sabari shree','gwdg shsgsd sdgsdgdg tamilnadu-624052',8264926453,'PGVFH6328B','IYGWGU');
+insert into customerInfo values(null,'MEERA','gjebdsfs jsdgadkgnow qwwfweg tamilnadu-624042',7735482920,'NSBDW7348J','BJW784N2');
+insert into customerInfo values(null,'Sarvesh','jgfwe ohgwrng qwpouewno wefee CHENNAI-624042',9363826493,'NEYDV7352N','NWHDV836');
+insert into customerInfo values(null,'Akshaya','eort iowehroh qoru2t jwbf Bangalore-753722',9352754846,'HSYVE6478B','Jbjjg77g');
+insert into customerInfo values(null,'Subathra','eEGER hdGh qoru2t jwbf Bangalore-94734322',9365368964,'MEUSB8352Y','Jbsgw44g');
+insert into customerInfo values(null,'Devi','ewgerg hey3t adhaerrhet wbf chennai-734334',8636345964,'NSYEG7342T','Jbsgw44g');
+insert into customerInfo values(null,'Murugesan','sjkgaer gearhaeh erhaetj worj GOA-537224',9442169769,'WYDKS6244P','wrrth4g');
+insert into customerInfo values(null,'Palanichamy','WjFET igi UU iwf rger PALANI-936362',8635278959,'KWUDV3715H','jwy341nU');
+insert into customerInfo values(null,'qwerty','yuuyw wtergh wgwrhg3r  Mumbai - 283922',9573526485,'NSDUD9382I','nduwb839');
+
+insert into accountInfo values(null,'Regular',50000,'2020-10-03','Open',1);
+insert into accountInfo values(null,'Savings',1250000,'2000-11-22','Open',1);
+insert into accountInfo values(null,'Salary',25000,'2020-11-22','Open',2);
+insert into accountInfo values(null,'Demat',22340,'2018-12-04','Blocked',3);
+insert into accountInfo values(null,'Savings',232340,'1999-05-15','Closed',4);
+insert into accountInfo values(null,'Salary',15000,'2015-11-21','Closed',5);
+insert into accountInfo values(null,'Savings',75000,'2018-03-27','Open',6);
+insert into accountInfo values(null,'Demat',75000,'2010-12-21','Blocked',7);
+insert into accountInfo values(null,'Savings',75000,'1997-07-18','Open',8);
+insert into accountInfo values(null,'Savings',25000,'2016-12-03','Open',9);
+insert into accountInfo values(null,'Salary',25000,'2016-12-03','closed',10);
+
+insert into transactioninfo values(null,1,'deposit',5000,'2021-10-03');
+insert into transactioninfo values(null,1,'deposit',200,'2021-10-03');
+insert into transactioninfo values(null,1,'deposit',2500,'2020-11-07');
+insert into transactioninfo values(null,1,'deposit',1000,'2020-12-27');
+insert into transactioninfo values(null,1,'deposit',1000,'2021-02-01');
+insert into transactioninfo values(null,1,'deposit',2500,'2020-11-12');
+insert into transactioninfo values(null,2,'deposit',5000,'2021-10-03');
+insert into transactioninfo values(null,4,'deposit',300,'2021-02-28');
+insert into transactioninfo values(null,4,'deposit',300,'2019-04-28');
+insert into transactioninfo values(null,1,'deposit',2500,'2020-11-12');
+insert into transactioninfo values(null,7,'deposit',2500,'2020-04-18');
+insert into transactioninfo values(null,10,'deposit',5000,'2018-12-27');
+
+1.................Latest 5 transactions of an account (Enter Account ID as an Input)...............
+select * from transactionInfo where accID=1 order by transID desc limit 5;
++---------+-------+-----------+--------+------------+
+| transID | accID | transType | amount | transDate  |
++---------+-------+-----------+--------+------------+
+|      10 |     1 | deposit   |   2500 | 2020-11-12 |
+|       6 |     1 | deposit   |   2500 | 2020-11-12 |
+|       5 |     1 | deposit   |   1000 | 2021-02-01 |
+|       4 |     1 | deposit   |   1000 | 2020-12-27 |
+|       3 |     1 | deposit   |   2500 | 2020-11-07 |
++---------+-------+-----------+--------+------------+
+
+
+2...........Transaction between two dates of an account (Enter Account ID as an Input)..............
+select * from transactionInfo where accID=1 and transDate between '2020-11-12' and '2021-02-01';
++---------+-------+-----------+--------+------------+
+| transID | accID | transType | amount | transDate  |
++---------+-------+-----------+--------+------------+
+|       4 |     1 | deposit   |   1000 | 2020-12-27 |
+|       5 |     1 | deposit   |   1000 | 2021-02-01 |
+|       6 |     1 | deposit   |   2500 | 2020-11-12 |
+|      10 |     1 | deposit   |   2500 | 2020-11-12 |
++---------+-------+-----------+--------+------------+
+
+3................ List of Accounts of a Customer (Enter Customer ID as an input).................
+select * from Accountinfo where cusID=1;
++-------+---------+---------+-------------+-----------+-------+
+| accId | accType | accBal  | accOpenDate | accStatus | cusID |
++-------+---------+---------+-------------+-----------+-------+
+|     1 | Regular |   50000 | 2020-10-03  | Open      |     1 |
+|     2 | Savings | 1250000 | 2000-11-22  | Open      |     1 |
++-------+---------+---------+-------------+-----------+-------+
+
+4....List of customers(CustomerID,CustomerName,CustomerAddress,CustomerMobileNo, AccountID , AccountBalance).....
+	select CustID,CustName,CustAdd,CustMobNo, AccID , AccBal 
+	from customerinfo join accountinfo 
+	where customerinfo.custID=accountinfo.cusID;
++--------+--------------+-----------------------------------------------+------------+-------+---------+
+| CustID | CustName     | CustAdd                                       | CustMobNo  | AccID | AccBal  |
++--------+--------------+-----------------------------------------------+------------+-------+---------+
+|      1 | Mahalakshmi  | R.M.Colony Dindigul tamilnadu-624001          | 9638352945 |     1 |   50000 |
+|      1 | Mahalakshmi  | R.M.Colony Dindigul tamilnadu-624001          | 9638352945 |     2 | 1250000 |
+|      2 | Sabari shree | gwdg shsgsd sdgsdgdg tamilnadu-624052         | 8264926453 |     3 |   25000 |
+|      3 | MEERA        | gjebdsfs jsdgadkgnow qwwfweg tamilnadu-624042 | 7735482920 |     4 |   22340 |
+|      4 | Sarvesh      | jgfwe ohgwrng qwpouewno wefee CHENNAI-624042  | 9363826493 |     5 |  232340 |
+|      5 | Akshaya      | eort iowehroh qoru2t jwbf Bangalore-753722    | 9352754846 |     6 |   15000 |
+|      6 | Subathra     | eEGER hdGh qoru2t jwbf Bangalore-94734322     | 9365368964 |     7 |   75000 |
+|      7 | Devi         | ewgerg hey3t adhaerrhet wbf chennai-734334    | 8636345964 |     8 |   75000 |
+|      8 | Murugesan    | sjkgaer gearhaeh erhaetj worj GOA-537224      | 9442169769 |     9 |   75000 |
+|      9 | Palanichamy  | WjFET igi UU iwf rger PALANI-936362           | 8635278959 |    10 |   25000 |
+|     10 | qwerty       | yuuyw wtergh wgwrhg3r  Mumbai - 283922        | 9573526485 |    11 |   25000 |
++--------+--------------+-----------------------------------------------+------------+-------+---------+
+
+5....List of accounts with transactions (AccountID , AccountBalance , TransID , Amount, TransationType).........................
+select transactioninfo.AccID,AccBal,TransID ,Amount,TransType from accountinfo join transactioninfo where transactioninfo.accid=accountinfo.accid;
++-------+---------+---------+--------+-----------+
+| AccID | AccBal  | TransID | Amount | TransType |
++-------+---------+---------+--------+-----------+
+|     1 |   50000 |       1 |   5000 | deposit   |
+|     1 |   50000 |       2 |    200 | deposit   |
+|     1 |   50000 |       3 |   2500 | deposit   |
+|     1 |   50000 |       4 |   1000 | deposit   |
+|     1 |   50000 |       5 |   1000 | deposit   |
+|     1 |   50000 |       6 |   2500 | deposit   |
+|     2 | 1250000 |       7 |   5000 | deposit   |
+|     4 |   22340 |       8 |    300 | deposit   |
+|     4 |   22340 |       9 |    300 | deposit   |
+|     1 |   50000 |      10 |   2500 | deposit   |
+|     7 |   75000 |      11 |   2500 | deposit   |
+|    10 |   25000 |      12 |   5000 | deposit   |
++-------+---------+---------+--------+-----------+
+
+6. List of customers with accounts and transations (CustomerID,CustomerName,CustomerAddress,CustomerMobileNo, AccountID , AccountBalance,TransationID , Amount, TransationType)
+
+
+ 
+
+
+
+
